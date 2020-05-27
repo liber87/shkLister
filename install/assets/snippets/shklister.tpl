@@ -5,23 +5,12 @@
  * <strong>1.0</strong> DocLister wrapper for Shopkeeper 
  *
  * @category	snippet
+ * @version    1.0.
  * @internal	@modx_category Shop
  * @internal	@installset base
  * @internal	@overwrite true
- * @internal	@properties 
- */
-
-/**
- * shkLister
- *
- * DocLister wrapper for Shopkeeper 
- *
- * @category    snippet
- * @version    1.0.
- * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
- * @internal    @properties
- * @internal    @modx_category Shop
  * @author      Alexey Liber (alexey@liber.pro)
+ * @internal	@properties 
  */
 
 if (!function_exists('shkListerPrepare'))
