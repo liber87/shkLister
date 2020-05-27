@@ -23,37 +23,40 @@
  * @internal    @modx_category Shop
  * @author      Alexey Liber (alexey@liber.pro)
  */
-	
-function shkListerPrepare($data)
+
+if (!function_exists('shkListerPrepare'))
 {
-	global $modx;
-	$purchases = $modx->getPlaceholder('purchases');
-		
-	$price_total = $modx->getPlaceholder('price_total');
-	$total_items = $modx->getPlaceholder('total_items');
-		
-	foreach($purchases as $val) 
-	{		
-		if ($val[0]==$data['id']) 
-		{
-			$data['count'] = $val[1];
-			$modx->setPlaceholder('total_items',$data['count']+$total_items);
-			$data['price'] = $val[2];
-			$evtOut = $modx->invokeEvent('OnSHKgetProductPrice',array('price' => $data['price'],'purchaseArray' => $purchases));
-       		if(is_array($evtOut)) $data['price'] = $evtOut[0];				
-			$data['summ'] = $data['count']*$data['price'];				
-			$modx->setPlaceholder('price_total',$data['summ']+$price_total);
-			if (count($val['tv_add'])) foreach($val['tv_add'] as $k => $v) $data['add.'.$k] = $v;
-			
-		}
-	}		
-	
-	if ($data['iteration']==(count($purchases)-1))
+	function shkListerPrepare($data)
 	{
-		$evtOut = $modx->invokeEvent('OnSHKcalcTotalPrice',array('totalPrice' => $modx->getPlaceholder('price_total'),'purchases' => $purchases));
-		if(!empty($evtOut[0])) $modx->setPlaceholder('price_total',$evtOut[0]);
-	}	
-	return $data;
+		global $modx;
+		$purchases = $modx->getPlaceholder('purchases');
+
+		$price_total = $modx->getPlaceholder('price_total');
+		$total_items = $modx->getPlaceholder('total_items');
+
+		foreach($purchases as $val) 
+		{		
+			if ($val[0]==$data['id']) 
+			{
+				$data['count'] = $val[1];
+				$modx->setPlaceholder('total_items',$data['count']+$total_items);
+				$data['price'] = $val[2];
+				$evtOut = $modx->invokeEvent('OnSHKgetProductPrice',array('price' => $data['price'],'purchaseArray' => $purchases));
+			if(is_array($evtOut)) $data['price'] = $evtOut[0];				
+				$data['summ'] = $data['count']*$data['price'];				
+				$modx->setPlaceholder('price_total',$data['summ']+$price_total);
+				if (count($val['tv_add'])) foreach($val['tv_add'] as $k => $v) $data['add.'.$k] = $v;
+
+			}
+		}		
+
+		if ($data['iteration']==(count($purchases)-1))
+		{
+			$evtOut = $modx->invokeEvent('OnSHKcalcTotalPrice',array('totalPrice' => $modx->getPlaceholder('price_total'),'purchases' => $purchases));
+			if(!empty($evtOut[0])) $modx->setPlaceholder('price_total',$evtOut[0]);
+		}	
+		return $data;
+	}
 }
 
 
